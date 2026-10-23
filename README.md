@@ -17,7 +17,7 @@ Get the latest version from the **[Releases page](../../releases/latest)**:
 
 | System | File |
 | --- | --- |
-| Windows 10/11 | `…_x64_en-US.msi` |
+| Windows 10/11 | `…_x64-setup.exe` or `…_x64_en-US.msi` |
 | macOS (Apple Silicon) | `…_aarch64.dmg` |
 | macOS (Intel) | `…_x64.dmg` |
 | Ubuntu / Debian | `…_amd64.deb` |

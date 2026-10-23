@@ -17,7 +17,7 @@ jobs:
         include:
           - name: Windows
             os: windows-latest
-            args: --bundles msi
+            args: --bundles msi,nsis
           - name: macOS (Apple Silicon)
             os: macos-latest
             rust_targets: aarch64-apple-darwin
@@ -66,7 +66,7 @@ jobs:
 
             | System | File |
             | --- | --- |
-            | **Windows 10/11** | `Clip.Downloader_*_x64_en-US.msi` |
+            | **Windows 10/11** | `Clip.Downloader_*_x64-setup.exe` (or the `.msi` for managed installs) |
             | **macOS, Apple Silicon (M1 and newer)** | `Clip.Downloader_*_aarch64.dmg` |
             | **macOS, Intel** | `Clip.Downloader_*_x64.dmg` |
             | **Ubuntu / Debian** | `Clip.Downloader_*_amd64.deb` |
