@@ -256,6 +256,16 @@ pub fn run() {
             });
             settings::load();
             engine::resolve();
+            // The page shows the window once it has drawn; this is a fallback in case its script fails.
+            let handle = app.handle().clone();
+            std::thread::spawn(move || {
+                std::thread::sleep(Duration::from_secs(2));
+                if let Some(w) = handle.get_webview_window("main") {
+                    if !w.is_visible().unwrap_or(true) {
+                        let _ = w.show();
+                    }
+                }
+            });
             let handle = app.handle().clone();
             std::thread::spawn(move || {
                 // Cleanup runs before updating, so it never touches a build that's in use.

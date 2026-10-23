@@ -314,6 +314,8 @@ listen('confirm-close', async () => {
   setFormat(s.format);
   ui.engine.textContent = s.engineVersion ? `yt-dlp ${s.engineVersion}` : '';
   showInfo(EMPTY_TITLE, EMPTY_META);
+  // The window starts hidden so the webview's blank white frame is never seen; show it now that the page is drawn.
+  appWindow.show();
   ui.url.focus();
   checkClipboard();
 })();
