@@ -1,0 +1,18 @@
+{
+  "name": "clip-downloader",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Download YouTube, TikTok and Instagram videos and audio",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "deps": "node scripts/fetch-deps.mjs --force",
+    "icons": "tauri icon app-icon.svg"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4"
+  }
+}

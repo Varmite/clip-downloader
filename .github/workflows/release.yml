@@ -1,0 +1,82 @@
+# Builds the installers on each OS and publishes them as a GitHub release.
+# Runs when a version tag (v1.2.3) is pushed, or by hand from the Actions tab.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-latest
+            args: --bundles msi
+          - name: macOS (Apple Silicon)
+            os: macos-latest
+            rust_targets: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin --bundles app,dmg
+          - name: macOS (Intel)
+            os: macos-latest
+            rust_targets: x86_64-apple-darwin
+            args: --target x86_64-apple-darwin --bundles app,dmg
+          - name: Linux
+            os: ubuntu-22.04
+            args: --bundles deb,rpm,appimage
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - run: npm ci
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__
+          releaseName: Clip Downloader v__VERSION__
+          releaseBody: |
+            ## Download
+
+            | System | File |
+            | --- | --- |
+            | **Windows 10/11** | `Clip.Downloader_*_x64_en-US.msi` |
+            | **macOS, Apple Silicon (M1 and newer)** | `Clip.Downloader_*_aarch64.dmg` |
+            | **macOS, Intel** | `Clip.Downloader_*_x64.dmg` |
+            | **Ubuntu / Debian** | `Clip.Downloader_*_amd64.deb` |
+            | **Fedora / openSUSE** | `Clip.Downloader-*.x86_64.rpm` |
+            | **Any Linux** | `Clip.Downloader_*_amd64.AppImage` |
+
+            The installers aren't code-signed yet:
+            - **Windows:** if SmartScreen appears, click **More info → Run anyway**.
+            - **macOS:** open the app once with **right-click → Open**, or run `xattr -cr "/Applications/Clip Downloader.app"` in Terminal.
+            - **AppImage:** make it executable (`chmod +x`) and run it.
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}

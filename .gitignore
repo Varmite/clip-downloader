@@ -1,0 +1,8 @@
+node_modules/
+src-tauri/target/
+src-tauri/gen/schemas/
+src-tauri/binaries/
+legacy/windows-winforms/dist/
+legacy/windows-winforms/deps/
+.DS_Store
+Thumbs.db

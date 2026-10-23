@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Clip Downloader",
+  "version": "2.0.0",
+  "identifier": "com.clipdownloader.desktop",
+  "build": {
+    "frontendDist": "../src",
+    "beforeDevCommand": "node scripts/fetch-deps.mjs",
+    "beforeBuildCommand": "node scripts/fetch-deps.mjs"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Clip Downloader",
+        "width": 620,
+        "height": 570,
+        "minWidth": 520,
+        "minHeight": 540,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "publisher": "Clip Downloader contributors",
+    "copyright": "Copyright © 2026 Clip Downloader contributors. MIT License.",
+    "license": "MIT",
+    "category": "Video",
+    "shortDescription": "Download YouTube, TikTok and Instagram videos and audio",
+    "longDescription": "A small, fast app for saving videos from YouTube, TikTok and Instagram as H.264 MP4/MKV or MP3/M4A audio. Paste a link, press Download.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "binaries/*": "bin/",
+      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
+    },
+    "windows": {
+      "wix": {
+        "language": "en-US"
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "signingIdentity": "-"
+    },
+    "linux": {
+      "deb": {
+        "section": "video"
+      }
+    }
+  }
+}
